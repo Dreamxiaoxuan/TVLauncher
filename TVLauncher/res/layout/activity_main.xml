@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlMain"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_3" >
+
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="#7f000000"/>
+
+    <!--<View-->
+        <!--android:id="@+id/vSetting"-->
+        <!--android:layout_width="32dp"-->
+        <!--android:layout_height="32dp"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_marginRight="20dp"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:background="@drawable/settings"/>-->
+
+     <View
+        android:id="@+id/vSetting"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/settings"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
+    
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/vSetting"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@id/vSetting"
+        android:layout_marginLeft="20dp"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:textColor="#ffffffff"
+        android:textSize="24dp" />
+
+    <TextView
+        android:id="@+id/tvWeather"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/vSetting"
+        android:layout_alignTop="@id/vSetting"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_toLeftOf="@id/vSetting"
+        android:layout_toRightOf="@id/tvTime"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:textColor="#ffffffff"
+        android:textSize="24dp" />
+
+    <HorizontalScrollView
+        android:focusable="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/vSetting"
+        android:layout_margin="20dp"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:id="@+id/llList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </HorizontalScrollView>
+
+</RelativeLayout>

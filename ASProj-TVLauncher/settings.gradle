@@ -1,0 +1,2 @@
+include ':TVLauncher'
+project(':TVLauncher').projectDir = new File('../TVLauncher')
