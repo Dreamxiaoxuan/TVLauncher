@@ -69,7 +69,7 @@ public class MainActivity extends Activity {
 		}.start();
 		
 		ftp = new FTPServer();
-		ftp.start(53721, "/sdcard");
+		ftp.start(8848, "/sdcard");
 		
 		new Thread(){
 			public void run() {
