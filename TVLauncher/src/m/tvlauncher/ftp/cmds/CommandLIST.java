@@ -37,7 +37,7 @@ public class CommandLIST implements FTPCommandHandler {
 				client.openDataChannel(new FTPDataChannel() {
 					public void action(InputStream input, OutputStream output, boolean binaryMode) throws Throwable {
 						try {
-							OutputStreamWriter osw = new OutputStreamWriter(output, "UTF-8");
+							OutputStreamWriter osw = new OutputStreamWriter(output, client.getEncoding());
 							for (String name : names) {
 								String line;
 								File file = new File(dir, name);

@@ -34,8 +34,8 @@ public class CommandSTOR extends CommandCOPY {
 							copy(input, fos);
 						} else {
 							client.reply("150 Opening ASCII mode data connection for " + file.getAbsolutePath());
-							OutputStreamWriter osw = new OutputStreamWriter(fos, "utf-8");
-							InputStreamReader isr = new InputStreamReader(input, "utf-8");
+							OutputStreamWriter osw = new OutputStreamWriter(fos, client.getEncoding());
+							InputStreamReader isr = new InputStreamReader(input, client.getEncoding());
 							copy(isr, osw);
 						}
 						fos.close();

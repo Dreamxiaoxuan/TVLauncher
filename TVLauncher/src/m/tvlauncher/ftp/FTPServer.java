@@ -19,15 +19,13 @@ public class FTPServer {
 			new Thread() {
 				public void run() {
 					try {
-						server = new ServerSocket(port, 1);
+						server = new ServerSocket(port);
 						TVLog.log("server start at: " + getIPAddress());
 						Socket incoming = server.accept();
 						while (incoming != null) {
 							TVLog.log("connected client: " + incoming.getInetAddress().getHostAddress());
 							FTPClient client = new FTPClient(incoming);
 							client.rootDir = rootDir;
-							client.serverAddress = getIPAddress();
-							client.serverPort = port;
 							handleClient(client);
 							incoming = server.accept();
 						}
@@ -40,7 +38,7 @@ public class FTPServer {
 		}
 	}
 	
-	private String getIPAddress() throws Throwable {
+	public static String getIPAddress() throws Throwable {
 		Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces();
 		while (en.hasMoreElements()) {
 			NetworkInterface intf = en.nextElement();

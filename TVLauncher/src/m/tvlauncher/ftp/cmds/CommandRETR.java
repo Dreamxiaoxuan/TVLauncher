@@ -31,8 +31,8 @@ public class CommandRETR extends CommandCOPY {
 						copy(fis, output);
 					} else {
 						client.reply("150 Opening ASCII mode data connection for " + file.getAbsolutePath());
-						InputStreamReader isr = new InputStreamReader(fis, "utf-8");
-						OutputStreamWriter osw = new OutputStreamWriter(output, "utf-8");
+						InputStreamReader isr = new InputStreamReader(fis, client.getEncoding());
+						OutputStreamWriter osw = new OutputStreamWriter(output, client.getEncoding());
 						copy(isr, osw);
 					}
 					fis.close();

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.AbstractMap.SimpleEntry;
 
@@ -13,23 +14,26 @@ public class FTPClient {
 	private Socket client;
 	private BufferedReader reader;
 	private PrintWriter writer;
-	public String serverAddress;
-	public int serverPort;
 	public String rootDir;
 	public String workingDir;
 	private String dataChannelHost;
 	private int dataChannelPort;
 	private Socket dataChannel;
 	private boolean binaryDataChannel;
+	private boolean pasvMode;
+	private ServerSocket pasvServer;
+	private File renameFrom;
+	private String encoding;
 	
 	public FTPClient(Socket client) {
 		this.client = client;
 		binaryDataChannel = true;
+		encoding = "utf-8";
 	}
 	
 	public SimpleEntry<FTPCommand, String> nextCommand() throws Throwable {
 		if (reader == null) {
-			InputStreamReader isr = new InputStreamReader(client.getInputStream(), "utf-8");
+			InputStreamReader isr = new InputStreamReader(client.getInputStream(), encoding);
 			reader = new BufferedReader(isr);
 		}
 		
@@ -68,6 +72,7 @@ public class FTPClient {
 		if (writer == null) {
 			writer = new PrintWriter(client.getOutputStream(), true);
 		}
+		TVLog.log("replay: " + message);
 		writer.println(message);
 	}
 	
@@ -109,9 +114,19 @@ public class FTPClient {
 		binaryDataChannel = binaryMode;
 	}
 	
+	public int setPASVMode() throws Throwable {
+		pasvServer = new ServerSocket(0);
+		pasvMode = true;
+		return pasvServer.getLocalPort();
+	}
+	
 	public void openDataChannel(FTPDataChannel channel) {
 		try {
-			dataChannel = new Socket(dataChannelHost, dataChannelPort);
+			if (pasvMode) {
+				dataChannel = pasvServer.accept();
+			} else {
+				dataChannel = new Socket(dataChannelHost, dataChannelPort);
+			}
 			channel.action(dataChannel.getInputStream(), dataChannel.getOutputStream(), binaryDataChannel);
 		} catch (Throwable t) {
 			TVLog.log(t);
@@ -132,6 +147,38 @@ public class FTPClient {
 			dataChannelPort = 0;
 			binaryDataChannel = true;
 		}
+		if (pasvServer != null && !pasvServer.isClosed()) {
+			try {
+				pasvServer.close();
+			} catch (Throwable t) {
+				TVLog.log(t);
+			}
+			pasvServer = null;
+			pasvMode = false;
+		}
 	}
 	
+	public void setRenameFrom(File renameFrom) {
+		this.renameFrom = renameFrom;
+	}
+	
+	public String renameTo(File destFile) {
+		File srcFile = renameFrom;
+		renameFrom = null;
+		if (srcFile == null) {
+			return "550 Rename error, maybe RNFR not sent";
+		} else if (srcFile.renameTo(destFile)) {
+			return "250 rename successful";
+		} else {
+			return "550 Error during rename operation";
+		}
+	}
+	
+	public String getEncoding() {
+		return encoding;
+	}
+	
+	public void setEncoding(String encoding) {
+		this.encoding = encoding;
+	}
 }
