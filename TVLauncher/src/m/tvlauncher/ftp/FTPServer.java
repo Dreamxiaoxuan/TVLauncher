@@ -57,7 +57,7 @@ public class FTPServer {
 		new Thread(){
 			public void run() {
 				try {
-					client.reply("220 Service ready for new user");
+					client.reply("220 FTP Server ready.");
 					boolean finished = false;
 					while (!finished) {
 						SimpleEntry<FTPCommand, String> res = client.nextCommand();

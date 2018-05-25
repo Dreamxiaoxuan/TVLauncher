@@ -2,16 +2,12 @@ package m.tvlauncher.ftp;
 
 import m.tvlauncher.TVLog;
 import m.tvlauncher.ftp.cmds.CommandABOR;
-import m.tvlauncher.ftp.cmds.CommandACCT;
-import m.tvlauncher.ftp.cmds.CommandALLO;
-import m.tvlauncher.ftp.cmds.CommandAPPE;
 import m.tvlauncher.ftp.cmds.CommandCDUP;
 import m.tvlauncher.ftp.cmds.CommandCWD;
 import m.tvlauncher.ftp.cmds.CommandDELE;
-import m.tvlauncher.ftp.cmds.CommandHELP;
+import m.tvlauncher.ftp.cmds.CommandFEAT;
 import m.tvlauncher.ftp.cmds.CommandLIST;
 import m.tvlauncher.ftp.cmds.CommandMKD;
-import m.tvlauncher.ftp.cmds.CommandMODE;
 import m.tvlauncher.ftp.cmds.CommandNLST;
 import m.tvlauncher.ftp.cmds.CommandNOOP;
 import m.tvlauncher.ftp.cmds.CommandOPTS;
@@ -20,17 +16,13 @@ import m.tvlauncher.ftp.cmds.CommandPASV;
 import m.tvlauncher.ftp.cmds.CommandPORT;
 import m.tvlauncher.ftp.cmds.CommandPWD;
 import m.tvlauncher.ftp.cmds.CommandQUIT;
-import m.tvlauncher.ftp.cmds.CommandREIN;
-import m.tvlauncher.ftp.cmds.CommandREST;
 import m.tvlauncher.ftp.cmds.CommandRETR;
 import m.tvlauncher.ftp.cmds.CommandRMD;
 import m.tvlauncher.ftp.cmds.CommandRNFR;
 import m.tvlauncher.ftp.cmds.CommandRNTO;
 import m.tvlauncher.ftp.cmds.CommandSITE;
-import m.tvlauncher.ftp.cmds.CommandSMNT;
+import m.tvlauncher.ftp.cmds.CommandSIZE;
 import m.tvlauncher.ftp.cmds.CommandSTOR;
-import m.tvlauncher.ftp.cmds.CommandSTOU;
-import m.tvlauncher.ftp.cmds.CommandSTRU;
 import m.tvlauncher.ftp.cmds.CommandSYST;
 import m.tvlauncher.ftp.cmds.CommandTYPE;
 import m.tvlauncher.ftp.cmds.CommandUNRCG;
@@ -69,11 +61,13 @@ public enum FTPCommand {
 	LIST(CommandLIST.class),   // 获取当前目录文件列表
 	NLST(CommandNLST.class),   // 获取当前目录下的目录列表
 //	SITE(CommandSITE.class),
+	SIZE(CommandSIZE.class),   // 获取文件尺寸
 	SYST(CommandSYST.class),   // 获取服务器类型
 //	HELP(CommandHELP.class),
 	NOOP(CommandNOOP.class),   // 无操作
 	XPWD(CommandXPWD.class),   // 获取当前目录完整路径
 	OPTS(CommandOPTS.class),   // 设置客户端支持的特性
+	FEAT(CommandFEAT.class),   // 获取服务端支持的特性
 	UNRCG(CommandUNRCG.class); // 客户端错误，不能识别的命令
 	
 	private FTPCommandHandler handler;

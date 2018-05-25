@@ -7,7 +7,7 @@ public class CommandPASS implements FTPCommandHandler {
 	
 	public boolean handleCommand(String param, FTPClient client) throws Throwable {
 		if (checkPASS(param)) {
-			client.reply("230 User logged in, proceed");
+			client.reply("230 User logged in, proceed.");
 			client.workingDir = "";
 			return false;
 		} else {

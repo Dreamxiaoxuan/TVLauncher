@@ -73,7 +73,7 @@ public class MainActivity extends Activity {
 		
 		new Thread(){
 			public void run() {
-				WirelessADB.start();
+//				WirelessADB.start();
 			}
 		}.start();
 	}
@@ -256,7 +256,7 @@ public class MainActivity extends Activity {
 		}
 		new Thread(){
 			public void run() {
-				WirelessADB.stop();
+//				WirelessADB.stop();
 			}
 		}.start();
 	}

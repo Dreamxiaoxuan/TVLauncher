@@ -1,9 +1,10 @@
 package m.tvlauncher.ftp;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.AbstractMap.SimpleEntry;
@@ -13,7 +14,7 @@ import m.tvlauncher.TVLog;
 public class FTPClient {
 	private Socket client;
 	private BufferedReader reader;
-	private PrintWriter writer;
+	private BufferedWriter writer;
 	public String rootDir;
 	public String workingDir;
 	private String dataChannelHost;
@@ -70,10 +71,16 @@ public class FTPClient {
 	
 	public void reply(String message) throws Throwable {
 		if (writer == null) {
-			writer = new PrintWriter(client.getOutputStream(), true);
+			OutputStreamWriter osw = new OutputStreamWriter(client.getOutputStream(), encoding);
+			writer = new BufferedWriter(osw);
 		}
 		TVLog.log("replay: " + message);
-		writer.println(message);
+		writer.append(message).append(newLine());
+		writer.flush();
+	}
+	
+	public String newLine() {
+		return "\r\n";
 	}
 	
 	public void close() {
@@ -114,10 +121,22 @@ public class FTPClient {
 		binaryDataChannel = binaryMode;
 	}
 	
-	public int setPASVMode() throws Throwable {
-		pasvServer = new ServerSocket(0);
-		pasvMode = true;
-		return pasvServer.getLocalPort();
+	public int setPASVMode(boolean enable) throws Throwable {
+		pasvMode = enable;
+		if (pasvMode) {
+			pasvServer = new ServerSocket(0);
+			return pasvServer.getLocalPort();
+		} else {
+			if (pasvServer != null && !pasvServer.isClosed()) {
+				try {
+					pasvServer.close();
+				} catch (Throwable t) {
+					TVLog.log(t);
+				}
+				pasvServer = null;
+			}
+			return 0;
+		}
 	}
 	
 	public void openDataChannel(FTPDataChannel channel) {

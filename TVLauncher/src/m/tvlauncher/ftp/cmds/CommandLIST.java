@@ -20,6 +20,12 @@ public class CommandLIST implements FTPCommandHandler {
 		if (param.isEmpty()) {
 			targetDir = client.getWorkingDirFile();
 		} else {
+			if (param.startsWith("-")) {
+				int p = param.indexOf(" ");
+				if (p > 0) {
+					param = param.substring(p + 1);
+				}
+			}
 			if (client.isTouchablePath(param)) {
 				targetDir = new File(param);
 			} else {
@@ -51,7 +57,7 @@ public class CommandLIST implements FTPCommandHandler {
 								SimpleDateFormat fmt = delta < 15552000000L ? fmtLess6M : fmtMore6M;
 								line += fmt.format(new Date(mTime));
 								line += name;
-								osw.write(line + "\r\n");
+								osw.write(line + client.newLine());
 							}
 							osw.flush();
 							osw.close();

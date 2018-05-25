@@ -8,6 +8,7 @@ public class CommandPORT implements FTPCommandHandler {
 	
 	public boolean handleCommand(String param, FTPClient client) throws Throwable {
 		try {
+			client.setPASVMode(false);
 			String[] parts = param.split(",");
 			String hostName = parts[0] + "." + parts[1] + "." + parts[2] + "." + parts[3];
 			int port = Integer.parseInt(parts[4]) * 256 + Integer.parseInt(parts[5]);

@@ -56,7 +56,7 @@ public class CommandNLST implements FTPCommandHandler {
 								SimpleDateFormat fmt = delta < 15552000000L ? fmtLess6M : fmtMore6M;
 								line += fmt.format(new Date(mTime));
 								line += file.getName();
-								osw.write(line + "\r\n");
+								osw.write(line + client.newLine());
 							}
 							osw.flush();
 							osw.close();
