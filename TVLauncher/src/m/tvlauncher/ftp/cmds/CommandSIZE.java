@@ -8,13 +8,7 @@ import m.tvlauncher.ftp.FTPClient;
 public class CommandSIZE implements FTPCommandHandler {
 	
 	public boolean handleCommand(String param, FTPClient client) throws Throwable {
-		File targetFile;
-		if (client.isTouchablePath(param)) {
-			targetFile = new File(param);
-		} else {
-			targetFile = new File(client.getWorkingDirFile(), param);
-		}
-		
+		File targetFile = client.toFile(param);
 		if (targetFile.exists()) {
 			if (targetFile.isFile()) {
 				client.reply("213 " + targetFile.length());

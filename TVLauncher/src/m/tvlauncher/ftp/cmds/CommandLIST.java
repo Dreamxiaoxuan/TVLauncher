@@ -26,18 +26,14 @@ public class CommandLIST implements FTPCommandHandler {
 					param = param.substring(p + 1);
 				}
 			}
-			if (client.isTouchablePath(param)) {
-				targetDir = new File(param);
-			} else {
-				targetDir = new File(client.getWorkingDirFile(), param);
-			}
+			targetDir = client.toFile(param);
 		}
 		
 		if (targetDir.isDirectory()) {
 			final File dir = targetDir;
 			final String[] names = targetDir.list();
 			if (names != null) {
-				client.reply("150 Opening ASCII mode data connection for /bin/ls.");
+				client.reply("150 Opening ASCII mode data connection for LIST.");
 				final SimpleDateFormat fmtLess6M = new SimpleDateFormat(" MMM dd HH:mm ", Locale.US);
 				final SimpleDateFormat fmtMore6M = new SimpleDateFormat(" MMM dd  yyyy ", Locale.US);
 				client.openDataChannel(new FTPDataChannel() {

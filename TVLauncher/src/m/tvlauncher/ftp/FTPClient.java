@@ -104,10 +104,24 @@ public class FTPClient {
 		return new File(rootDir, workingDir);
 	}
 	
-	public boolean isTouchablePath(String path) {
-		if (path.startsWith(rootDir)) {
-			String subPath = path.substring(rootDir.length());
-			return (subPath.isEmpty() || subPath.startsWith(File.separator));
+	public File toFile(String pathParam) {
+		if (isTouchablePath(pathParam)) {
+			return new File(pathParam);
+		} else if (pathParam.startsWith(File.separator)) {
+			return new File(rootDir, pathParam);
+		} else {
+			return new File(getWorkingDirFile(), pathParam);
+		}
+	}
+	
+	private boolean isTouchablePath(String path) {
+		File root = new File(rootDir);
+		File file = new File(path);
+		while (file != null) {
+			if (root.equals(file)) {
+				return true;
+			}
+			file = file.getParentFile();
 		}
 		return false;
 	}

@@ -18,11 +18,7 @@ public class CommandCWD implements FTPCommandHandler {
 		} else if (".".equals(param) || ("." + File.separator).equals(param)) {
 			client.reply("250 Requested file action okay, directory change to " + client.getWorkingDirFile().getAbsolutePath());
 		} else {
-			if (client.isTouchablePath(param)) {
-				newDir = new File(param);
-			} else {
-				newDir = new File(client.getWorkingDirFile(), param);
-			}
+			newDir = client.toFile(param);
 		}
 		
 		if (newDir != null) {

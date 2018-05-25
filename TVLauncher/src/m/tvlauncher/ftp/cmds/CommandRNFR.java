@@ -11,13 +11,7 @@ public class CommandRNFR implements FTPCommandHandler {
 		if (param.isEmpty()) {
 			client.reply("550 Request action not taken");
 		} else {
-			File targetFile;
-			if (client.isTouchablePath(param)) {
-				targetFile = new File(param);
-			} else {
-				targetFile = new File(client.getWorkingDirFile(), param);
-			}
-			
+			File targetFile = client.toFile(param);
 			if (targetFile.exists()) {
 				client.setRenameFrom(targetFile);
 				client.reply("350 Filename noted, now send RNTO");

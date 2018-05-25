@@ -12,13 +12,7 @@ public class CommandRNTO implements FTPCommandHandler {
 		if (param.isEmpty()) {
 			client.reply("450 Cannot rename nonexistent file");
 		} else {
-			File targetFile;
-			if (client.isTouchablePath(param)) {
-				targetFile = new File(param);
-			} else {
-				targetFile = new File(client.getWorkingDirFile(), param);
-			}
-			
+			File targetFile = client.toFile(param);
 			if (targetFile.exists()) {
 				client.reply("550 File " + targetFile.getAbsolutePath() + " already exists");
 			} else {

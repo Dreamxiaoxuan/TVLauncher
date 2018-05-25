@@ -8,13 +8,7 @@ import m.tvlauncher.ftp.FTPClient;
 public class CommandMKD implements FTPCommandHandler {
 	
 	public boolean handleCommand(String param, FTPClient client) throws Throwable {
-		File targetDir;
-		if (client.isTouchablePath(param)) {
-			targetDir = new File(param);
-		} else {
-			targetDir = new File(client.getWorkingDirFile(), param);
-		}
-		
+		File targetDir = client.toFile(param);
 		if (targetDir.exists()) {
 			client.reply("550 Request action not taken");
 		} else if (targetDir.mkdirs()) {

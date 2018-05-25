@@ -22,11 +22,13 @@ public class CommandNLST implements FTPCommandHandler {
 		if (param.isEmpty()) {
 			targetDir = client.getWorkingDirFile();
 		} else {
-			if (client.isTouchablePath(param)) {
-				targetDir = new File(param);
-			} else {
-				targetDir = new File(client.getWorkingDirFile(), param);
+			if (param.startsWith("-")) {
+				int p = param.indexOf(" ");
+				if (p > 0) {
+					param = param.substring(p + 1);
+				}
 			}
+			targetDir = client.toFile(param);
 		}
 		
 		if (targetDir.isDirectory()) {

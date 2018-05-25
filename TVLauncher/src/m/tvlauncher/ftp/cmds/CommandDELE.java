@@ -8,15 +8,9 @@ import m.tvlauncher.ftp.FTPClient;
 public class CommandDELE implements FTPCommandHandler {
 	
 	public boolean handleCommand(String param, FTPClient client) throws Throwable {
-		File targetFile;
-		if (client.isTouchablePath(param)) {
-			targetFile = new File(param);
-		} else {
-			targetFile = new File(client.getWorkingDirFile(), param);
-		}
-		
+		File targetFile = client.toFile(param);
 		if (deleteFile(targetFile)) {
-			client.reply("250 Request file action ok,complete");
+			client.reply("250 Request file action ok, complete");
 		} else {
 			client.reply("550 Request action not taken");
 		}

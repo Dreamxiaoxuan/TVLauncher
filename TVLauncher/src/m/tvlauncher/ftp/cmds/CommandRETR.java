@@ -14,14 +14,7 @@ import m.tvlauncher.ftp.FTPDataChannel;
 public class CommandRETR extends CommandCOPY {
 	
 	public boolean handleCommand(String param, final FTPClient client) throws Throwable {
-		File f;
-		if (client.isTouchablePath(param)) {
-			f = new File(param);
-		} else {
-			f = new File(client.getWorkingDirFile(), param);
-		}
-		
-		final File file = f;
+		final File file = client.toFile(param);
 		client.openDataChannel(new FTPDataChannel() {
 			public void action(InputStream input, OutputStream output, boolean binaryMode) throws Throwable {
 				try {
