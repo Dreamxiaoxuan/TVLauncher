@@ -1,0 +1,8 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.mob.eclipsemodule'
+
+EclipseModule {
+	JDKVersion 1.6
+	minSdkVersion 16
+	targetSdkVersion 21
+}
