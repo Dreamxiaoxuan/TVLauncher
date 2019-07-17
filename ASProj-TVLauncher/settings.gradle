@@ -1,2 +1,5 @@
 include ':TVLauncher'
 project(':TVLauncher').projectDir = new File('../TVLauncher')
+
+//include ':RemotControler'
+//project(':RemotControler').projectDir = new File('../RemotControler')

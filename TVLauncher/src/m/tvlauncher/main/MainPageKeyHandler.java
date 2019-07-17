@@ -69,14 +69,14 @@ public class MainPageKeyHandler implements OnKeyListener {
 		} else {
 			App app = (App) v.getTag();
 			if (app != null) {
-				v.getContext().startActivity(app.iLaunch);
+				app.launch(v.getContext());
 			}
 		}
 	}
 	
 	private void onMenu(View v) {
 		App app = (App) v.getTag();
-		if (app != null) {
+		if (app != null && app.removable()) {
 			Uri uri = Uri.parse("package:" + app.packageName);
 	        Intent intent = new Intent(Intent. ACTION_DELETE ,uri);
 	        v.getContext().startActivity(intent);

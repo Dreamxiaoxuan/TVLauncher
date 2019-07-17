@@ -14,6 +14,8 @@ public class WirelessADB {
 			os.flush();
 			os.write("start adbd\n".getBytes("utf-8"));
 			os.flush();
+			os.write("exit\n".getBytes("utf-8"));
+			os.flush();
 			p.waitFor();
 			p.destroy();
 			TVLog.log("wireless adb started");
@@ -31,6 +33,8 @@ public class WirelessADB {
 			os.write("stop adbd\n".getBytes("utf-8"));
 			os.flush();
 			os.write("start adbd".getBytes("utf-8"));
+			os.flush();
+			os.write("exit\n".getBytes("utf-8"));
 			os.flush();
 			p.waitFor();
 			p.destroy();

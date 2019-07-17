@@ -7,6 +7,7 @@ import m.tvlauncher.ftp.cmds.CommandCWD;
 import m.tvlauncher.ftp.cmds.CommandDELE;
 import m.tvlauncher.ftp.cmds.CommandFEAT;
 import m.tvlauncher.ftp.cmds.CommandLIST;
+import m.tvlauncher.ftp.cmds.CommandMFMT;
 import m.tvlauncher.ftp.cmds.CommandMKD;
 import m.tvlauncher.ftp.cmds.CommandNLST;
 import m.tvlauncher.ftp.cmds.CommandNOOP;
@@ -43,13 +44,13 @@ public enum FTPCommand {
 	PASV(CommandPASV.class),   // 进入服务端被动模式，返回服务端数据连接的地址和端口号
 	TYPE(CommandTYPE.class),   // 设置后续操作的数据类型
 //	STRU(CommandSTRU.class),
-//	MODE(CommandMODE.class),
+//	MODE(CommandMODE.class),   // 设置数据传输模式
 	RETR(CommandRETR.class),   // 上传数据到服务端
 	STOR(CommandSTOR.class),   // 下载数据到客户端
 //	STOU(CommandSTOU.class),
 //	APPE(CommandAPPE.class),
 //	ALLO(CommandALLO.class),
-//	REST(CommandREST.class),
+//	REST(CommandREST.class),   // 设置重新读取文件的位置
 	RNFR(CommandRNFR.class),   // 设置重命操作的名源文件
 	RNTO(CommandRNTO.class),   // 将重命名操作的源文件重命名为指定名字
 	ABOR(CommandABOR.class),   // 取消当前操作，断开数据连接
@@ -68,6 +69,7 @@ public enum FTPCommand {
 	XPWD(CommandXPWD.class),   // 获取当前目录完整路径
 	OPTS(CommandOPTS.class),   // 设置客户端支持的特性
 	FEAT(CommandFEAT.class),   // 获取服务端支持的特性
+	MFMT(CommandMFMT.class),   // 设置文件的最后修改时间
 	UNRCG(CommandUNRCG.class); // 客户端错误，不能识别的命令
 	
 	private FTPCommandHandler handler;

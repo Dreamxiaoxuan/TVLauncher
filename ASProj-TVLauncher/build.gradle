@@ -5,13 +5,16 @@ buildscript {
 	}
 
     dependencies {
-		classpath 'com.android.tools.build:gradle:3.1.2'
+		classpath 'com.android.tools.build:gradle:3.4.0'
 		classpath 'com.mob.eclipsemodule:EclipseModule:+'
     }
 }
 
 allprojects {
-
+	repositories {
+		jcenter()
+		google()
+	}
 }
 
 task clean(type: Delete) {

@@ -2,4 +2,5 @@
 <resources>
     <string name="time_format_am">yyyy年M月d日 上午h:mm</string>
     <string name="time_format_pm">yyyy年M月d日 下午h:mm</string>
+    <string name="app_name_wireless_adb">重启无线ADB</string>
 </resources>

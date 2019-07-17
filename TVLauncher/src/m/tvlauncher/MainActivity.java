@@ -9,6 +9,7 @@ import android.content.pm.PackageInfo;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
@@ -21,14 +22,20 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
 import m.tvlauncher.ftp.FTPServer;
 import m.tvlauncher.main.App;
+import m.tvlauncher.main.HiddenApp;
+import m.tvlauncher.main.InternalApp;
 import m.tvlauncher.main.MainPageClickHandler;
 import m.tvlauncher.main.MainPageEventHandler;
 import m.tvlauncher.main.MainPageKeyHandler;
+import m.tvlauncher.main.NormalApp;
+import m.tvlauncher.remotecontroler.RemoteServer;
 
 public class MainActivity extends Activity {
 	private static final int COL_SIZE = 4;
@@ -40,6 +47,7 @@ public class MainActivity extends Activity {
 	private ArrayList<App> apps;
 	private BroadcastReceiver receiver;
 	private FTPServer ftp;
+	private RemoteServer remote;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -69,13 +77,10 @@ public class MainActivity extends Activity {
 		}.start();
 		
 		ftp = new FTPServer();
-		ftp.start(8848, "/sdcard");
+		ftp.start(8848, "/");
 		
-		new Thread(){
-			public void run() {
-				WirelessADB.start();
-			}
-		}.start();
+		remote = new RemoteServer();
+		remote.start(2468);
 	}
 	
 	private BitmapDrawable getBg() {
@@ -140,7 +145,12 @@ public class MainActivity extends Activity {
 					&& !"com.android.settings".equals(packageName)) {
 				Intent iLaunch = getPackageManager().getLaunchIntentForPackage(pi.packageName);
 				if (iLaunch != null) {
-					App app = new App();
+					App app;
+					if ("com.kingroot.kinguser".equals(pi.packageName) || "com.mxtech.videoplayer.ad".equals(pi.packageName)) {
+						app = new HiddenApp();
+					} else {
+						app = new NormalApp();
+					}
 					app.iLaunch = iLaunch;
 					app.packageName = pi.packageName;
 					app.appName = pi.applicationInfo.loadLabel(getPackageManager()).toString();
@@ -149,6 +159,48 @@ public class MainActivity extends Activity {
 				}
 			}
 		}
+		
+		App wirelessAdb = new InternalApp() {
+			public void launch(Context context) {
+				new Thread() {
+					public void run() {
+						WirelessADB.start();
+						TVLog.log("Wireless ADB Started");
+					}
+				}.start();
+			}
+		};
+		wirelessAdb.packageName = getPackageName() + ".wirelessadb";
+		wirelessAdb.appName = getString(R.string.app_name_wireless_adb);
+		wirelessAdb.icon = getResources().getDrawable(R.drawable.adb_switcher);
+		apps.add(wirelessAdb);
+		
+		int i = 0;
+		while (i < apps.size()) {
+			App app = apps.get(i);
+			if (!app.displayable()) {
+				apps.remove(i);
+			} else {
+				i++;
+			}
+		}
+		Collections.sort(apps, new Comparator<App>() {
+			public int compare(App left, App right) {
+				String nl = left.appName;
+				String nr = right.appName;
+				if (TextUtils.isEmpty(nl)) {
+					if (TextUtils.isEmpty(nr)) {
+						nl = left.packageName;
+						nr = right.packageName;
+					} else {
+						return 1;
+					}
+				} else if (TextUtils.isEmpty(nr)) {
+					return -1;
+				}
+				return nl.compareTo(nr);
+			}
+		});
 		
 		runOnUiThread(new Runnable() {
 			public void run() {
@@ -254,10 +306,5 @@ public class MainActivity extends Activity {
 		if (ftp != null) {
 			ftp.quit();
 		}
-		new Thread(){
-			public void run() {
-				WirelessADB.stop();
-			}
-		}.start();
 	}
 }

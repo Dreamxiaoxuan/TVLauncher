@@ -18,6 +18,9 @@ public class CommandSTOR extends CommandCOPY {
 			client.reply("501 Syntax error in parameters or arguments");
 		} else {
 			final File file = client.toFile(param);
+			if (!file.getParentFile().exists()) {
+				file.getParentFile().mkdirs();
+			}
 			client.openDataChannel(new FTPDataChannel() {
 				public void action(InputStream input, OutputStream output, boolean binaryMode) throws Throwable {
 					try {
